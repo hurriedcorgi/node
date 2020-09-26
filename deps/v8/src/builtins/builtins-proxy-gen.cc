@@ -3,15 +3,14 @@
 // found in the LICENSE file.
 
 #include "src/builtins/builtins-proxy-gen.h"
+
 #include "src/builtins/builtins-utils-gen.h"
 #include "src/builtins/builtins-utils.h"
 #include "src/builtins/builtins.h"
-
 #include "src/logging/counters.h"
 #include "src/objects/js-proxy.h"
 #include "src/objects/objects-inl.h"
-
-#include "torque-generated/exported-macros-assembler-tq.h"
+#include "torque-generated/exported-macros-assembler.h"
 
 namespace v8 {
 namespace internal {
@@ -62,9 +61,10 @@ TNode<JSProxy> ProxiesCodeStubAssembler::AllocateProxy(
 
 TNode<Context> ProxiesCodeStubAssembler::CreateProxyRevokeFunctionContext(
     TNode<JSProxy> proxy, TNode<NativeContext> native_context) {
-  const TNode<Context> context =
-      AllocateSyntheticFunctionContext(native_context, kProxyContextLength);
-  StoreContextElementNoWriteBarrier(context, kProxySlot, proxy);
+  const TNode<Context> context = AllocateSyntheticFunctionContext(
+      native_context, ProxyRevokeFunctionContextSlot::kProxyContextLength);
+  StoreContextElementNoWriteBarrier(
+      context, ProxyRevokeFunctionContextSlot::kProxySlot, proxy);
   return context;
 }
 
